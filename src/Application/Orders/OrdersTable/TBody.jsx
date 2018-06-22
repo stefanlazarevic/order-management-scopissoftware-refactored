@@ -9,12 +9,6 @@ import OrderRow from './OrderRow.jsx';
 class TBody extends Component {
     orderReferences = {};
 
-    shouldComponentUpdate = nextProps => {
-        return this.props.orderBy !== nextProps.orderBy ||
-               this.props.orders.length !== nextProps.orders.length ||
-               this.props.filterBy !== nextProps.filterBy;
-    }
-
     componentDidUpdate() {
         this.props.onOrdersUpdate(this.props.orders);
     }

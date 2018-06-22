@@ -35,6 +35,12 @@ class OrderRow extends Component {
         };
     }
 
+    shouldComponentUpdate = nextProps => {
+        return this.props.price !== nextProps.price ||
+               new Date(this.props.date) !== new Date(nextProps.date);
+
+    }
+
     /**======================================
      * React life cycle events.
      ======================================*/
