@@ -1,24 +1,15 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { FormControl } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { setFilterBy } from '../../../Redux/Actions/Orders';
 
 class OrderSearchForm extends Component {
-    componentDidMount() {
-        if (typeof this.props.onRef === 'function') {
-            this.props.onRef(this)
-        }
-    }
-
     /**========================================================
      * If component is removed, make sure to clear timer for search.
      ========================================================*/
     componentWillUnmount() {
         if (this.timeout) {
             clearTimeout(this.timeout);
-        }
-
-        if (typeof this.props.onRef === 'function') {
-            this.props.onRef(undefined)
         }
     }
 
@@ -33,25 +24,21 @@ class OrderSearchForm extends Component {
         }
 
         this.timeout = setTimeout(() => {
-            this.props.onSearch(this.searchInput.value);
+            this.props.setFilterBy(this.searchInput.value.trim());
         }, 450);
     }
 
     /**========================================================
      * Component render method.
      ========================================================*/
-    render() {
-        return (
-            <FormControl type="text"
-                        placeholder="Search"
-                        inputRef={ input => (this.searchInput = input) }
-                        onChange={ this.search } />
-        );
-    };
+    render = () => (
+        <FormControl type="text"
+                    placeholder="Search"
+                    inputRef={ input => (this.searchInput = input) }
+                    onChange={ this.search } />
+    )
 };
 
-OrderSearchForm.propTypes = {
-    onSearch: PropTypes.func.isRequired,
-};
+const mapStateToProps = state => ({ filterBy: state.orders.filterBy });
 
-export default OrderSearchForm;
+export default connect(mapStateToProps, { setFilterBy })(OrderSearchForm);

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Row, Col, Button } from 'react-bootstrap';
 
 class OrdersBatchActions extends Component {
@@ -6,21 +7,9 @@ class OrdersBatchActions extends Component {
         super(props);
 
         this.state = {
-            records: props.records || 0,
+            records: props.records,
             toDelete: 0,
         };
-    }
-
-    componentDidMount() {
-        if (typeof this.props.onRef === 'function') {
-            this.props.onRef(this);
-        }
-    }
-
-    componentWillUnmount() {
-        if (typeof this.props.onRef === 'function') {
-            this.props.onRef(undefined);
-        }
     }
 
     /**========================================================
@@ -41,21 +30,27 @@ class OrdersBatchActions extends Component {
 
     decrementToDelete = () => this.setState(state => ({ toDelete: state.toDelete > 0 ? state.toDelete - 1 : 0 }));
 
-    render() {
-        return (
-            <Row>
-                <Col md={6}>
-                    Records: { this.state.records }
-                </Col>
-                <Col md={6} className="text-right" style={ { marginTop: 20 } }>
-                    <Button onClick={ () => {
-                        this.props.onButtonClick()
-                        this.setToDelete(0);
-                        } }>({ this.state.toDelete }) Delete</Button>
-                </Col>
-            </Row>
-        );
-    }
+    render = () => (
+        <Row>
+            <Col md={6}>
+                Records: { this.state.records }
+            </Col>
+            <Col md={6} className="text-right" style={ { marginTop: 20 } }>
+                <Button onClick={ () => {
+                    this.props.onButtonClick()
+                    this.setToDelete(0);
+                    } }>({ this.state.toDelete }) Delete</Button>
+            </Col>
+        </Row>
+    )
 }
+
+OrdersBatchActions.propTypes = {
+    records: PropTypes.number
+};
+
+OrdersBatchActions.defaultProps = {
+    records: 0,
+};
 
 export default OrdersBatchActions;

@@ -85,9 +85,9 @@ class OrderRow extends Component {
 
         this.setState(state => ({
             locked,
-            checked: false,
         }));
 
+        this.setCheckedStatus(false);
         this.props.onLockedStatusChange(locked, this.props.id); // Callback function for 'locked' changed status.
     }
 

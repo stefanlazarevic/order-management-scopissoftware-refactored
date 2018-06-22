@@ -6,33 +6,21 @@ class ItemTotal extends Component {
         super(props);
 
         this.state = {
-            total: this.props.total || 0,
+            total: this.props.total,
         };
-    }
-
-    componentDidMount() {
-        if (typeof this.props.onRef === 'function') {
-            this.props.onRef(this);
-        }
-    }
-
-    componentWillUnmount() {
-        if (typeof this.props.onRef === 'function') {
-            this.props.onRef(undefined);
-        }
     }
 
     updateTotal = total => this.setState(state => ({ total }));
 
-    render() {
-        return (
-            <span>{ this.state.total }</span>
-        );
-    }
+    render = () => <span>{ this.state.total }</span>
 };
 
 ItemTotal.propTypes = {
-    onRef: PropTypes.func.isRequired,
+    total: PropTypes.number,
+};
+
+ItemTotal.defaultProps = {
+    total: 0,
 };
 
 export default ItemTotal;

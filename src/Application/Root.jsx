@@ -2,12 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Tabs, Tab } from 'react-bootstrap';
 import { openTab, removeTab, addTab } from '../Redux/Actions/Tabs';
-import { saveOrder, fetchOrders } from '../Redux/Actions/Orders';
+import { saveOrder } from '../Redux/Actions/Orders';
 
+import { highlightUpdates } from 'react-highlight-updates';
+ 
 // Local Components.
 import FormRoot from './OrderForm/FormRoot.jsx';
 import SectionHeader from './SectionHeader/SectionHeader.jsx';
 import OrderRoot from './Orders/OrdersRoot.jsx';
+
+highlightUpdates();
 
 class Root extends Component {
     /**========================================================
@@ -73,4 +77,4 @@ class Root extends Component {
 
 const mapStateToProps = state => ({ tabs: state.tabs.tabs, activeTabIndex: state.tabs.activeTabIndex });
 
-export default connect(mapStateToProps, { openTab, removeTab, addTab, saveOrder, fetchOrders })(Root)
+export default connect(mapStateToProps, { openTab, removeTab, addTab, saveOrder })(Root)

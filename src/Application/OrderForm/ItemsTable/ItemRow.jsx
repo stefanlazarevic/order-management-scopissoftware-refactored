@@ -13,84 +13,72 @@ const posibleItems = [
 ];
 
 class ItemRow extends Component {
-    componentDidMount() {
-        if (typeof this.props.onRef === 'function') {
-            this.props.onRef(this);
-        }
-    }
-
-    componentWillUnmount() {
-        if (typeof this.props.onRef === 'function') {
-            this.props.onRef(undefined);
-        }
-    }
-
-    getValue = () => {
-        return {
-            id: this.props.id,
-            product: this.product.value,
-            quantity: +this.quantity.value,
-            price: +this.price.value,
-            total: +this.quantity.value * +this.price.value,
-        };
-    }
+    getValue = () => ({
+        id: this.props.id,
+        product: this.product.value,
+        quantity: +this.quantity.value,
+        price: +this.price.value,
+        total: +this.quantity.value * +this.price.value,
+    });
 
     onChange = evt => {
         this.itemTotal.updateTotal(+this.price.value * +this.quantity.value);
         this.props.onDataChange(this.getValue());
     };
 
-    render() {
-        const { props } = this;
-        return (
-            <tr>
-                <td>
-                    <FormControl componentClass="select"
-                                 placeholder="select"
-                                 defaultValue={ props.product }
-                                 inputRef={select => (this.product = select ) }>
-                        <option defaultValue="select">select</option>
-                        {
-                            posibleItems.map(
-                                (item, index) => (
-                                    <option key={ index } value={ item }>
-                                        { item }
-                                    </option>
-                                )
+    render = () => (
+        <tr>
+            <td>
+                <FormControl componentClass="select"
+                                placeholder="select"
+                                defaultValue={ this.props.product }
+                                inputRef={ select => (this.product = select ) }>
+                    <option defaultValue="select">select</option>
+                    {
+                        posibleItems.map(
+                            (item, index) => (
+                                <option key={ index } value={ item }>
+                                    { item }
+                                </option>
                             )
-                        }
-                    </FormControl>
-                </td>
-                <td>
-                    <FormControl type="number"
-                                 defaultValue={ props.quantity || 0 }
-                                 inputRef={input => (this.quantity = input ) }
-                                 onChange={ this.onChange } />
-                </td>
-                <td>
-                    <FormControl type="number"
-                                 defaultValue={ props.price || 0 }
-                                 inputRef={input => (this.price = input ) }
-                                 onChange={ this.onChange }/>
-                </td>
-                <td className="text-right">
-                    <ItemTotal onRef={ itemTotal => (this.itemTotal = itemTotal) }
-                               total={ this.props.quantity * this.props.price } />
-                </td>
-                <td>
-                    <Button onClick={ props.onDelete }>
-                        <Glyphicon glyph="trash"/>
-                    </Button>
-                </td>
-            </tr>
-        );
-    }
+                        )
+                    }
+                </FormControl>
+            </td>
+            <td>
+                <FormControl type="number"
+                                defaultValue={ this.props.quantity }
+                                inputRef={ input => (this.quantity = input ) }
+                                onChange={ this.onChange } />
+            </td>
+            <td>
+                <FormControl type="number"
+                                defaultValue={ this.props.price }
+                                inputRef={ input => (this.price = input ) }
+                                onChange={ this.onChange }/>
+            </td>
+            <td className="text-right">
+                <ItemTotal ref={ itemTotal => (this.itemTotal = itemTotal) }
+                            total={ this.props.quantity * this.props.price } />
+            </td>
+            <td>
+                <Button onClick={ this.props.onDelete }>
+                    <Glyphicon glyph="trash"/>
+                </Button>
+            </td>
+        </tr>
+    )
 };
 
 ItemRow.propTypes = {
     product: PropTypes.string.isRequired,
     quantity: PropTypes.number.isRequired,
     price: PropTypes.number.isRequired,
+};
+
+ItemRow.defaultProps = {
+    quantity: 0,
+    price: 0,
 };
 
 export default ItemRow;

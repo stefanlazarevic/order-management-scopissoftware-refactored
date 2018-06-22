@@ -19,22 +19,6 @@ class TBody extends Component {
         };
     }
 
-    componentDidMount() {
-        if (typeof this.props.onRef === 'function') {
-            this.props.onRef(this)
-        }
-    }
-
-    componentWillUnmount() {
-        if (typeof this.props.onRef === 'function') {
-            this.props.onRef(undefined)
-        }
-
-        if (this.timeout) {
-            clearTimeout(this.timeout);
-        }
-    }
-
     addItemRef = (node, index) => {
         if (node) {
             this.itemComponents[index] = node;
@@ -43,9 +27,7 @@ class TBody extends Component {
         }
     }
 
-    getItems = () => {
-        return this.itemComponents.map(item => item.getValue());
-    }
+    getItems = () => this.itemComponents.map(item => item.getValue());
 
     addItem = () => {
         const item = {
@@ -83,20 +65,18 @@ class TBody extends Component {
         }
     }
 
-    componentDidUpdate() {
-        this.props.onUpdate(this.getItems());
-    }
+    componentDidUpdate = () => this.props.onUpdate(this.getItems());
 
     renderItemsView = () => {
         const thisRef = this;
         return this.state.items.map((item, index) => {
             return <ItemRow key={ item.id }
                             id={ item.id }
-                            ref={ (node) => thisRef.addItemRef(node, index) }
+                            ref={ node => thisRef.addItemRef(node, index) }
                             product={ item.product }
                             quantity={ item.quantity }
                             price={ item.price }
-                            onDataChange={ (data) => this.props.onUpdate(this.getItems()) }
+                            onDataChange={ data => this.props.onUpdate(this.getItems()) }
                             onDelete={ () => this.removeItem(index) } />
         });
     }
@@ -110,17 +90,14 @@ class TBody extends Component {
         </tr>
     );
 
-    render() {
-        return (
-            <tbody>
-                { this.state.items.length ? this.renderItemsView() : this.renderNoItemsView() }
-            </tbody>
-        );
-    }
+    render = () => (
+        <tbody>
+            { this.state.items.length ? this.renderItemsView() : this.renderNoItemsView() }
+        </tbody>
+    );
 };
 
 TBody.propTypes = {
-    onRef: PropTypes.func.isRequired,
     onItemAdded: PropTypes.func,
     onItemRemoved: PropTypes.func,
 };

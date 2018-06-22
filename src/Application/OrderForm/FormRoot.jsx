@@ -76,7 +76,7 @@ class FormRoot extends Component {
                                     Date:
                                 </Col>
                                 <Col sm={9}>
-                                    <DatePicker date={ this.order.date } onRef={ (datepicker) => (this.datepicker = datepicker) }/>
+                                    <DatePicker date={ this.order.date } ref={ datepicker => (this.datepicker = datepicker) }/>
                                 </Col>
                             </FormGroup>
                             <FormGroup controlId="formHorizontalTax">
@@ -89,7 +89,7 @@ class FormRoot extends Component {
                             </FormGroup>
                         </Col>
                         <Col xs={12} md={4}>
-                            <Summary onRef={ summary => (this.summary = summary) }/>
+                            <Summary ref={ summary => (this.summary = summary) }/>
                         </Col>
                     </Row>
                     <Row>
@@ -100,8 +100,8 @@ class FormRoot extends Component {
                                 actionButtonText={ 'New Item' }
                                 onActionButtonClick={ () => this.itemsTable.tbody.addItem() } />
                             <ItemsTable items={ this.order.items }
-                                        onRef={ (itemsTable) => (this.itemsTable = itemsTable) }
-                                        onChange={ (items) => this.summary.update(items) }/>
+                                        ref={ itemsTable => (this.itemsTable = itemsTable) }
+                                        onChange={ items => this.summary.update(items) }/>
                         </Col>
                     </Row>
                     <FormActionSection onSave={ this.save } onCancel={ this.props.onCancel }/>

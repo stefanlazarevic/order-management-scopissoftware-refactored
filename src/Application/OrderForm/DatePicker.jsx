@@ -14,20 +14,6 @@ class DatePicker extends Component {
         this.state = {
             date: this.props.date ? moment(this.props.date) : moment(),
         };
-
-        console.log(this.props.date);
-    }
-
-    componentDidMount() {
-        if (typeof this.props.onRef === 'function') {
-            this.props.onRef(this)
-        }
-    }
-
-    componentWillUnmount() {
-        if (typeof this.props.onRef === 'function') {
-            this.props.onRef(undefined)
-        }
     }
 
     onChange = date => this.setState(state => ({ date }));
@@ -46,7 +32,6 @@ class DatePicker extends Component {
 
 DatePicker.propTypes = {
     date: PropTypes.string,
-    onRef: PropTypes.func.isRequired,
 };
 
 export default DatePicker;

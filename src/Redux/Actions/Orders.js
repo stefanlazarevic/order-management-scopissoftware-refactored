@@ -23,3 +23,19 @@ export const deleteOrder = id => dispatch => {
         payload: id,
     });
 }
+
+export const setOrderBy = columnName => dispatch => {
+    dispatch({
+        action: OrderActionTypes.SET_ORDER_BY,
+        type: OrderActionTypes.SET_ORDER_BY,
+        payload: columnName,
+    });
+}
+
+export const setFilterBy = pattern => dispatch => {
+    dispatch({
+        action: OrderActionTypes.SET_FILTER_BY,
+        type: OrderActionTypes.SET_FILTER_BY,
+        payload: pattern,
+    });
+}
