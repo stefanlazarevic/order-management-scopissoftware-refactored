@@ -9,6 +9,12 @@ import OrderRow from './OrderRow.jsx';
 class TBody extends Component {
     orderReferences = {};
 
+    shouldComponentUpdate = nextProps => {
+        return this.props.orders.length !== nextProps.orders.length ||
+               this.props.orderBy !== nextProps.orderBy ||
+               this.props.filterBy !== nextProps.filterBy;
+    }
+
     componentDidUpdate() {
         this.props.onOrdersUpdate(this.props.orders);
     }
@@ -76,7 +82,8 @@ class TBody extends Component {
                                                         onLinkClick={ () => this.props.addTab(order.id) }
                                                         onLockedStatusChange={ this.handleOrderLocking }
                                                         onCheckStatusChange={ this.handleOrderChecking }
-                                                        onDelete={ () => this.handleOrderDeletion('single', order.id) } 
+                                                        onDelete={ () => this.handleOrderDeletion('single', order.id) }
+                                                        onUpdate={ () => this.props.onOrdersUpdate(this.props.orders) } 
                                                 />)
             }
         </tbody>

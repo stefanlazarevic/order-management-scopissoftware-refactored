@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Checkbox, ButtonGroup, Button, Glyphicon } from 'react-bootstrap';
+import { connect } from 'react-redux';
 
 /**
  * OrderRow is component that represent table row in orders component. This component determine if order can be deleted
@@ -39,6 +40,10 @@ class OrderRow extends Component {
         return this.props.price !== nextProps.price ||
                new Date(this.props.date) !== new Date(nextProps.date);
 
+    }
+
+    componentDidUpdate = () => {
+        this.props.onUpdate();
     }
 
     /**======================================
@@ -170,4 +175,9 @@ OrderRow.propTypes = {
     onDelete: PropTypes.func,
 };
 
-export default OrderRow;
+const mapStateToProps = (state, ownProps) => {
+    const order = state.orders.orders[ownProps.id];
+    return order;
+}
+
+export default connect(mapStateToProps, {}, null, { withRef: true })(OrderRow);
