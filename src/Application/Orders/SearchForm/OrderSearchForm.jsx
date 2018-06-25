@@ -4,14 +4,13 @@ import { connect } from 'react-redux';
 import { setFilterBy } from '../../../Redux/Actions/Orders';
 
 class OrderSearchForm extends Component {
+
+    shouldComponentUpdate = nextProps => this.props.filterBy !== nextProps.filterBy;
+
     /**========================================================
      * If component is removed, make sure to clear timer for search.
      ========================================================*/
-    componentWillUnmount() {
-        if (this.timeout) {
-            clearTimeout(this.timeout);
-        }
-    }
+    componentWillUnmount = () => this.timeout ? clearTimeout(this.timeout) : undefined;
 
     /**========================================================
      * Main searching function. To prevent execution on each value change, add timeout < 500ms.

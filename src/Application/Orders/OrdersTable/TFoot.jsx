@@ -10,7 +10,7 @@ class TFoot extends Component {
         };
     }
 
-    updateTotalPrice = price => this.setState({ price });
+    updateTotalPrice = price => price !== this.state.price ? this.setState({ price }) : void 0;
 
     render = () => (
         <tfoot>

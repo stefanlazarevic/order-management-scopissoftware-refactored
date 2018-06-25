@@ -24,13 +24,15 @@ class Orders extends Component {
             </Col>
             <Col xs={12}>
                 <OrdersBatchActions ref={ batch => (this.batch = batch) }
-                                    onButtonClick={ () => this.ordersTable.tbody.wrappedInstance.deleteOrders('multiple') } />
+                                    onButtonClick={ () => {
+                                        this.ordersTable.tbody.wrappedInstance.handleOrderDeletion('multiple') }
+                                     } />
                 <OrdersTable ref={ ordersTable => ( this.ordersTable = ordersTable ) }
                              onOrderChecking={ checked => checked ? this.batch.incrementToDelete() : this.batch.decrementToDelete() }
                              onOrderLocking={ locked => locked ? this.batch.decrementToDelete() : void 0 }
                              onOrderDeleting={ checked => checked ? this.batch.decrementToDelete() : void 0 }
                              onOrdersUpdate={ orders => {
-                                this.batch.setRecords(orders.length)
+                                this.batch.setRecords(orders.length);
                                 this.batch.setToDelete(orders.reduce(
                                     (acc, order) => { return acc += order.checked ? 1 : 0 }, 0
                                 ));

@@ -10,13 +10,22 @@ class TBody extends Component {
     orderReferences = {};
 
     shouldComponentUpdate = nextProps => {
-        return this.props.orders.length !== nextProps.orders.length ||
-               this.props.orderBy !== nextProps.orderBy ||
-               this.props.filterBy !== nextProps.filterBy;
+        return this.props.orders_id.length !== nextProps.orders_id.length || this.props.orderBy !== nextProps.orderBy;
     }
 
-    componentDidUpdate() {
-        this.props.onOrdersUpdate(this.props.orders);
+    componentDidUpdate = () => {
+        this.props.onOrdersUpdate(this.getOrderReferencesAsArray());
+    }
+
+    componentDidMount = () => {
+        this.props.onOrdersUpdate(this.getOrderReferencesAsArray());
+    }
+
+    getOrderReferencesAsArray = () => {
+        console.log('Refs', this.orderReferences);
+        const refs = [];
+        Object.values(this.orderReferences).forEach(or => or ? refs.push(or.wrappedInstance.getValue()) : void 0);
+        return refs;
     }
 
     /**
@@ -44,9 +53,10 @@ class TBody extends Component {
             this.props.onOrderDeleting(order.state.checked); // Callback function for order deleting.
         } else if (batchType === 'multiple') {
             const ids = Object.keys(this.orderReferences).filter(id => {
-                const order = this.orderReferences[id];
+                const order = this.orderReferences[id].wrappedInstance;
                 return order.state.checked && !order.state.locked;
-            }).map(order => order.id);
+            });
+
             this.props.deleteOrder(ids);
             this.removeRowReference(ids);
         }
@@ -55,7 +65,7 @@ class TBody extends Component {
     removeRowReference = ids => {
         if (typeof ids === 'string') {
             delete this.orderReferences[ids];
-        } 
+        }
 
         if (Object.prototype.toString.call(ids) === '[object Array]') {
             ids.forEach(id => delete this.orderReferences[id]);
@@ -66,28 +76,28 @@ class TBody extends Component {
         Object.keys(this.orderReferences).forEach(id => {
             const order = this.orderReferences[id]
             if (order) {
-                order.setCheckedStatus(checked);   
+                order.wrappedInstance.setCheckedStatus(checked);
             }
         });
     }
 
     render = () => (
         <tbody>
-            { 
+            {
                 this.props.orders.map(order => <OrderRow key={ order.id }
                                                         id={ order.id }
                                                         ref={ o => { this.orderReferences[order.id] = o } }
-                                                        date={ order.date } 
-                                                        price={ order.price } 
+                                                        date={ order.date }
+                                                        price={ order.price }
                                                         onLinkClick={ () => this.props.addTab(order.id) }
                                                         onLockedStatusChange={ this.handleOrderLocking }
                                                         onCheckStatusChange={ this.handleOrderChecking }
                                                         onDelete={ () => this.handleOrderDeletion('single', order.id) }
-                                                        onUpdate={ () => this.props.onOrdersUpdate(this.props.orders) } 
+                                                        onUpdate={ () => console.log('updated') }
                                                 />)
             }
         </tbody>
-    );      
+    );
 }
 
 TBody.propTypes = {
@@ -104,28 +114,30 @@ TBody.defaultProps = {
     onOrderChecking: () => undefined,
 };
 
-const mapStateToProps = state => {
-    const orders = Object.keys(state.orders.orders).filter(id => {
-        const filterPattern = state.orders.filterBy;
-        const regexp = new RegExp(`^${filterPattern.toUpperCase()}|ORD-${filterPattern}`);
-        return regexp.test(id);
-    }).sort((id, id2) => {
-        const order1 = state.orders.orders[id];
-        const order2 = state.orders.orders[id2];
+const mapStateToProps = (state, ownProps) => {
 
-        switch (state.orders.orderBy) {
-            case 'price': return order1.price - order2.price;
-            case 'date': return new Date(order1.date) - new Date(order2.date);
-            default: return 0;
-        }
-    }).map((id, index) => {
-        return state.orders.orders[id];
-    });
+    let { orders_id } = state.orders;
+    let { orders } = state.orders;
 
-    return { 
+    if (ownProps.filterBy !== state.orders.filterBy) {
+        orders_id = orders_id.filter(id => {
+            const filterPattern = state.orders.filterBy;
+            const regexp = new RegExp(`^${filterPattern.toUpperCase()}|ORD-${filterPattern}`);
+            return regexp.test(id);
+        })
+    }
+
+    if (state.orders.orderBy !== ownProps.orderBy) {
+        orders = orders_id.map((id, index) => {
+            return state.orders.orders[id];
+        });
+    }
+
+    return {
         orderBy: state.orders.orderBy,
         filterBy: state.orders.filterBy,
-        orders 
+        orders_id,
+        orders,
     };
 }
 

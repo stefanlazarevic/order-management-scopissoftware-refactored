@@ -3,11 +3,15 @@ import { connect } from 'react-redux';
 import { Tabs, Tab } from 'react-bootstrap';
 import { openTab, removeTab, addTab } from '../Redux/Actions/Tabs';
 import { saveOrder } from '../Redux/Actions/Orders';
- 
+
+import ReactHighlightUpdates from 'react-highlight-updates';
+
 // Local Components.
 import FormRoot from './OrderForm/FormRoot.jsx';
 import SectionHeader from './SectionHeader/SectionHeader.jsx';
 import OrderRoot from './Orders/OrdersRoot.jsx';
+
+ReactHighlightUpdates();
 
 class Root extends Component {
     /**========================================================

@@ -5,7 +5,7 @@ import TabsReducer from './Reducers/Tabs';
 
 const customMiddlewares = [thunk];
 
-// const reduxDevToolsMiddleware = window.devToolsExtension && window.devToolsExtension();
+const reduxDevToolsMiddleware = window.devToolsExtension && window.devToolsExtension();
 
 const reducers = combineReducers({
     orders: OrdersReducer,
@@ -16,7 +16,7 @@ const ReduxStore = createStore(
     reducers,
     compose(
         applyMiddleware(...customMiddlewares),
-        // reduxDevToolsMiddleware
+        reduxDevToolsMiddleware
     ),
 );
 

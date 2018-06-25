@@ -1,13 +1,5 @@
 import * as OrderActionTypes from '../ActionTypes/Orders';
 
-export const fetchOrders = () => dispatch => {
-    dispatch({
-        action: OrderActionTypes.FETCH_ORDERS,
-        type: OrderActionTypes.FETCH_ORDERS,
-        payload: null,
-    });
-}
-
 export const saveOrder = data => dispatch => {
     dispatch({
         action: OrderActionTypes.SAVE_ORDER,
