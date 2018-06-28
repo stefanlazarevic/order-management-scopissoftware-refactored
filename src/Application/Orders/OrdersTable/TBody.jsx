@@ -93,7 +93,6 @@ class TBody extends Component {
                                                         onLockedStatusChange={ this.handleOrderLocking }
                                                         onCheckStatusChange={ this.handleOrderChecking }
                                                         onDelete={ () => this.handleOrderDeletion('single', order.id) }
-                                                        onUpdate={ () => console.log('updated') }
                                                 />)
             }
         </tbody>
@@ -115,7 +114,6 @@ TBody.defaultProps = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-
     let { orders_id } = state.orders;
     let { orders } = state.orders;
 

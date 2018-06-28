@@ -43,10 +43,7 @@ export default (state = DEFAULT_STATE, action) => {
                 },
             };
 
-            const orders_id = [
-                ...state.orders_id,
-                order.id
-            ];
+            const orders_id = Object.keys(orders);
 
             if (state.orderBy !== '') {
                 orderSort(orders_id, orders, state.orderBy);
@@ -91,9 +88,9 @@ export default (state = DEFAULT_STATE, action) => {
         }
         case OrderActionTypes.SET_ORDER_BY: {
             const orderBy = action.payload;
-            const { orders_id } = state;
+            const { orders, orders_id } = state;
 
-            orderSort(orders_id, state.orders, orderBy);
+            orderSort(orders_id, orders, orderBy);
 
             return Object.assign({}, {
                 ...state,

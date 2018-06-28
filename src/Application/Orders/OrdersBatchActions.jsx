@@ -19,9 +19,17 @@ class OrdersBatchActions extends Component {
 
     getToDelete = () => this.state.toDelete;
 
-    setRecords = records => this.setState({ records });
+    setRecords = records => {
+        if (records !== this.state.records) {
+            this.setState({ records });
+        }
+    }
 
-    setToDelete = toDelete => this.setState({ toDelete });
+    setToDelete = toDelete => {
+        if (toDelete !== this.state.toDelete) {
+            this.setState({ toDelete });
+        }
+    }
 
     /**========================================================
      * Helper inc/dec functions for faster manipulation of toDelete state.

@@ -42,10 +42,6 @@ class OrderRow extends Component {
 
     }
 
-    componentDidUpdate = () => {
-        this.props.onUpdate();
-    }
-
     /**======================================
      * React life cycle events.
      ======================================*/
